@@ -32,14 +32,23 @@ def push_button(modules, push_count=0, init_pulse=False): # sends low pulse to b
     while len(queue) > 0:
         sender, destination, pulse = queue.popleft()
         #print(f"{sender} - {pulse} -> {destination}")
+        '''
+        if not destination in modules:
+            continue
+        '''
+        #------------ part 2 -----------------
         if not destination in modules:
             if destination == "rx":
                 if not pulse:
                     print(f"found rx at push {push_count}")
                     return
-                else:
-                    print(f"{sender} - {pulse} -> {destination}")
             continue
+        #if destination == "th":
+        #    if modules["cn"]["flip"]["th"]:
+        #        print(f"th is flipped at push {push_count + 1}")
+
+        # ----------- part 2 -----------------
+
 
         if modules[destination]["type"] == "%":
             if not pulse: # if received low pulse, flip the switch and send pulse
@@ -81,14 +90,21 @@ def calculate_pulses_product(modules, press_cnt):
     for record in pulses_record:
         high_cnt += record[True]*int(press_cnt/len(pulses_record))
         low_cnt += record[False]*int(press_cnt/len(pulses_record))
-    print(f"high: {high_cnt}, low: {low_cnt}")
 
     for i in range(press_cnt%len(pulses_record)):
-        print(f"adding {pulses_record[i]}")
         high_cnt += pulses_record[i][True]
         low_cnt += pulses_record[i][False]
 
-    return low_cnt*high_cnt
+    # return low_cnt*high_cnt
 
 
-print(calculate_pulses_product(modules, 1000))
+calculate_pulses_product(modules, 100000)
+
+'''
+th: 3947
+sv: 4001
+gh: 3943
+ch: 3917
+'''
+
+print(3947*4001*3943*3917)
